@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chạm Văn Hóa – Hành trình qua 12 điểm đến</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Noto+Serif+Display:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1F5FA;--card:#FFFFFF;--line:#D3DCE8;--text:#14233C;--muted:#546479;--accent:#1B3A73;--red:#C8372D;--gold:#E0A526;--teal:#0E7C86;--sea:#CFE6F2;--land:#F0E2BB;--soft:#E8EEF7;--tagbg:#FBEBC2;--tagfg:#5C4210;
+--serif:"Noto Serif Display",Georgia,serif;--sans:"Be Vietnam Pro","Segoe UI",Roboto,Arial,sans-serif}
+[data-theme=dark]{--bg:#0C1626;--card:#14233A;--line:#27395A;--text:#E6EDF7;--muted:#9DB0CB;--accent:#3C73C4;--red:#E5584C;--gold:#F0B93A;--teal:#35B3BE;--sea:#10304A;--land:#4A4430;--soft:#1B2E4B;--tagbg:#4A3A12;--tagfg:#F6DDA0}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;transition:background .3s,color .3s}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+header{background:linear-gradient(120deg,#14274E,#1F4F8F 55%,#0E7C86);color:#fff;padding:36px 24px 40px}
+header>div{max-width:1120px;margin:auto}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+h1{font-family:var(--serif);font-weight:800;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.12}
+header p{margin-top:12px;max-width:66ch;color:#DCE8F5}
+.ghost{border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.1);color:#fff;border-radius:99px;padding:6px 16px;font-size:.88rem}
+.ghost:hover{background:rgba(255,255,255,.25)}
+.prog{display:flex;align-items:center;gap:14px;margin-top:20px;flex-wrap:wrap;font-size:.92rem}
+.pb{flex:1;min-width:140px;max-width:320px;height:8px;border-radius:9px;background:rgba(255,255,255,.25);overflow:hidden}
+.pb i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+main{max-width:1120px;margin:auto;padding:24px 24px 56px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--accent);background:transparent;border-radius:99px;padding:6px 16px;font-size:.92rem}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.act{border:1px solid var(--red);background:var(--red);color:#fff;border-radius:99px;padding:6px 16px;font-size:.92rem;font-weight:600}
+.act.alt{background:var(--teal);border-color:var(--teal);color:#fff}
+.bar .sp{flex:1}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin-bottom:22px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 8px;text-align:center;line-height:1.3;transition:.15s}
+.chip .m{display:block;font-size:.74rem;color:var(--muted)}
+.chip .nm{display:block;font-size:.88rem;font-weight:600}
+.chip:hover{border-color:var(--teal);transform:translateY(-2px)}
+.chip.seen .m::after{content:" ✓";color:var(--gold)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.on .m{color:#C9D8EE}
+.chip.dim,.pin.dim{opacity:.3}
+.layout{display:grid;grid-template-columns:minmax(280px,400px) 1fr;gap:28px;align-items:start}
+.mapbox{position:sticky;top:12px;background:var(--sea);border:1px solid var(--line);border-radius:10px;padding:8px}
+#map{width:100%;height:auto;display:block}
+.land{fill:var(--land);stroke:#9C8A55;stroke-width:1.5;stroke-linejoin:round}
+.sea{font:italic 14px var(--serif);fill:var(--muted);letter-spacing:.12em}
+.isl text{font:9px var(--sans);fill:var(--muted);text-anchor:middle}.isl circle{fill:#9C8A55}
+.pin{cursor:pointer;transition:opacity .2s}
+.pin .halo{fill:var(--red);opacity:0}
+.pin .dot{fill:var(--red);stroke:#fff;stroke-width:2;transition:r .15s}
+.pin.seen .dot{fill:var(--gold)}
+.pin:hover .dot,.pin:focus .dot{r:9}
+.pin.on .dot{fill:var(--teal);r:9}
+.pin.on .halo{opacity:.3;animation:pulse 1.6s ease-out infinite}
+@keyframes pulse{from{r:7;opacity:.5}to{r:20;opacity:0}}
+.pin text{font:600 12px var(--sans);fill:#14233C;paint-order:stroke;stroke:#fff;stroke-width:3px;opacity:0;pointer-events:none}
+.pin:hover text,.pin:focus text,.pin.on text{opacity:1}
+.note-map{font-size:.8rem;color:var(--muted);padding:6px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px;min-height:420px}
+.intro h2,.d h2{font-family:var(--serif);font-size:1.9rem;line-height:1.2}
+.intro p{margin-top:10px;color:var(--muted);max-width:58ch}
+.media{margin-bottom:18px}
+.tabs{display:flex;gap:6px}
+.tabs button{border:none;background:var(--soft);border-radius:8px 8px 0 0;padding:6px 14px;font-size:.9rem}
+.tabs button[aria-pressed=true]{background:var(--accent);color:#fff}
+.stage{background:var(--soft);border-radius:0 10px 10px 10px;overflow:hidden}
+#art svg{display:block;width:100%;height:auto}
+figure img#main{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--soft)}
+figcaption,.note{font-size:.82rem;color:var(--muted);padding:8px 12px}
+figcaption a{color:var(--teal)}
+.thumbs{display:flex;gap:6px;padding:0 12px 12px;flex-wrap:wrap}
+.thumbs button{border:2px solid transparent;padding:0;border-radius:4px;overflow:hidden;width:64px;height:44px;background:none}
+.thumbs button.on{border-color:var(--gold)}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.sun{transform-origin:235px 45px;animation:glow 3.5s ease-in-out infinite alternate}
+@keyframes glow{to{transform:scale(1.18)}}
+.cloud{animation:drift 16s linear infinite alternate}
+@keyframes drift{to{transform:translateX(70px)}}
+.hd{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.tags{margin-top:6px}
+.tag{display:inline-block;background:var(--tagbg);color:var(--tagfg);border-radius:99px;padding:2px 12px;font-size:.84rem;margin-right:6px}
+.tag.alt{background:var(--soft);color:var(--text)}
+.star{border:1px solid var(--gold);background:transparent;border-radius:99px;padding:6px 16px;font-size:.9rem}
+.star[aria-pressed=true]{background:var(--gold);color:#2B2008;font-weight:600}
+.sub{margin-top:12px;font-family:var(--serif);font-size:1.25rem;color:var(--teal);font-weight:700}
+.lead{margin-top:8px}
+.merge{font-size:.88rem;color:var(--muted);margin-top:6px}
+.stabs{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.stabs button{border:1px solid var(--line);background:transparent;border-radius:99px;padding:5px 16px;font-size:.92rem}
+.stabs button[aria-pressed=true]{background:var(--teal);border-color:var(--teal);color:#fff}
+.d h3{font-size:1rem;color:var(--muted);margin:16px 0 8px}
+.d ul{padding-left:20px}.d li{margin-bottom:4px}
+.food{display:flex;flex-wrap:wrap;gap:8px}
+.food span{background:var(--soft);border-radius:6px;padding:3px 12px;font-size:.9rem}
+details{border:1px solid var(--line);border-radius:8px;margin-bottom:8px;background:var(--soft)}
+summary{padding:10px 14px;cursor:pointer;font-weight:600}
+details[open] summary{color:var(--teal)}
+details p{padding:0 14px 12px}
+.hint,.eras{font-size:.85rem;color:var(--muted)}
+.eras{display:flex;flex-wrap:wrap;gap:6px}
+.eras button{border:1px solid var(--line);background:transparent;border-radius:99px;padding:3px 12px;font-size:.82rem}
+.eras button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tl{list-style:none;padding:0;margin:16px 0 0 8px;border-left:3px solid var(--line)}
+.tl li{position:relative;padding:0 0 16px 22px}
+.tl li::before{content:"";position:absolute;left:-10px;top:5px;width:16px;height:16px;border-radius:50%;background:var(--c);border:3px solid var(--card)}
+.tl b{display:block;color:var(--c)}
+.e0{--c:var(--gold)}.e1{--c:var(--red)}.e2{--c:var(--teal)}.e3{--c:var(--accent)}
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px;flex-wrap:wrap}
+.nav button{border:1px solid var(--accent);background:none;border-radius:8px;padding:7px 14px}
+.nav button:hover{background:var(--accent);color:#fff}
+.q .opts{display:grid;gap:10px;margin-top:14px}
+.q .opts button{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:10px 14px;text-align:left;font-size:1rem}
+.q .opts button:hover:not(:disabled){border-color:var(--teal)}
+.q .opts button:disabled{color:var(--text)}
+.q .ok{background:#CFE8D6!important;border-color:#2C7A45!important;color:#10331B!important}
+.q .bad{background:#F3D3D3!important;border-color:var(--red)!important;color:#4A1313!important}
+.q .fb{margin:14px 0;font-weight:500}
+.q svg{border-radius:10px;width:100%;height:auto;display:block}
+.q blockquote{border-left:4px solid var(--gold);background:var(--soft);padding:14px 16px;border-radius:0 8px 8px 0;font-family:var(--serif)}
+.trip{list-style:none;padding:0;margin:14px 0}
+.trip li{display:flex;flex-direction:column;padding:8px 0;border-bottom:1px solid var(--line)}
+.trip button{all:unset;cursor:pointer;color:var(--teal);font-weight:600}
+.trip span{font-size:.88rem;color:var(--muted)}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.mapbox{position:static;max-width:420px;margin:auto}}
+footer{background:#14274E;color:#B9CBE0;text-align:center;padding:24px;font-size:.86rem}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.chat-fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:20;display:flex;align-items:center;gap:8px;border:none;background:var(--red);color:#fff;border-radius:99px;padding:12px 18px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.28)}
+.chat-fab:hover{filter:brightness(1.1)}
+.chat{position:fixed;right:18px;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:21;width:min(380px,calc(100vw - 24px));height:min(540px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.3);overflow:hidden}
+.chat-h{background:linear-gradient(120deg,#14274E,#0E7C86);color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.chat-h b{font-family:var(--serif);font-size:1.05rem}
+.chat-h small{opacity:.85}
+.chat-h button{flex:none;border:none;background:rgba(255,255,255,.2);color:#fff;border-radius:50%;width:30px;height:30px;font-size:1.2rem;line-height:1}
+.msgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.m{max-width:90%;padding:9px 13px;border-radius:14px;font-size:.92rem;line-height:1.55}
+.m.bot{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-top-left-radius:4px}
+.m.me{background:var(--accent);color:#fff;align-self:flex-end;border-top-right-radius:4px}
+.m.typing{opacity:.6;font-style:italic}
+.m ul{padding-left:18px;margin:6px 0}
+.m p+p{margin-top:6px}
+.m .go{display:inline-block;margin:6px 6px 0 0;border:1px solid var(--teal);color:var(--teal);background:transparent;border-radius:99px;padding:2px 12px;font-size:.84rem}
+.m .go:hover{background:var(--teal);color:#fff}
+.sug{display:flex;gap:6px;overflow-x:auto;padding:8px 12px;border-top:1px solid var(--line);background:var(--card)}
+.sug button{flex:none;border:1px solid var(--line);background:var(--soft);border-radius:99px;padding:4px 12px;font-size:.82rem;white-space:nowrap}
+.sug button:hover{border-color:var(--teal)}
+.chat form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--card)}
+.chat input{flex:1;min-width:0;border:1px solid var(--line);border-radius:99px;padding:8px 14px;font:inherit;background:var(--bg);color:var(--text)}
+.chat form button{border:none;background:var(--teal);color:#fff;border-radius:99px;padding:8px 16px;font-weight:600}
+@media(max-width:480px){.chat{right:8px;width:calc(100vw - 16px)}}
+</style>
+</head>
+<body>
+<header><div>
+  <div class="top"><h1>Chạm Văn Hóa</h1><button class="ghost" id="theme" aria-label="Đổi giao diện sáng hoặc tối">Giao diện: Sáng</button></div>
+  <p>Mỗi tháng một địa danh, mỗi địa danh một câu chuyện. Bấm vào ghim trên bản đồ hoặc chọn tháng để xem ảnh thật, tranh vẽ, giai thoại và các giai đoạn lịch sử. Dữ liệu theo mô hình 34 tỉnh, thành phố từ ngày 01/07/2025.</p>
+  <div class="prog"><span id="pt">Đã khám phá 0/12</span><div class="pb" role="progressbar" aria-label="Tiến độ khám phá"><i id="pbar"></i></div><button class="ghost" id="trip">Hành trình của tôi (0)</button></div>
+</div></header>
+<main>
+  <div class="bar">
+    <div class="seg" id="seg" role="group" aria-label="Lọc theo vùng">
+      <button data-r="all" aria-pressed="true">Tất cả</button>
+      <button data-r="b" aria-pressed="false">Miền Bắc</button>
+      <button data-r="t" aria-pressed="false">Miền Trung – Tây Nguyên</button>
+      <button data-r="n" aria-pressed="false">Miền Nam</button>
+    </div>
+    <span class="sp"></span>
+    <button class="act alt" id="rnd">Khám phá ngẫu nhiên</button>
+    <button class="act" id="quiz">Đố vui</button>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Lịch 12 tháng"></div>
+  <div class="layout">
+    <div class="mapbox">
+      <svg id="map" viewBox="0 0 460 620" role="group" aria-label="Bản đồ Việt Nam với 12 điểm đến"></svg>
+      <p class="note-map">Bản đồ vẽ minh họa, không dùng để xác định đường biên giới. Quần đảo Hoàng Sa và Trường Sa thuộc chủ quyền Việt Nam.</p>
+    </div>
+    <div class="panel" id="panel" aria-live="polite"></div>
+  </div>
+</main>
+<footer>Ảnh thật được tải từ Wikipedia khi có kết nối Internet. Thông tin mang tính giới thiệu, nên đối chiếu thêm khi dùng cho bài viết chính thức.</footer>
+
+<button class="chat-fab" id="fab" aria-expanded="false" aria-controls="chat"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Hỏi trợ lý</button>
+<section class="chat" id="chat" role="dialog" aria-label="Trợ lý ảo Chạm Văn Hóa" hidden>
+  <div class="chat-h"><div><b>Trợ lý Chạm Văn Hóa</b><br><small>Giải đáp về 12 điểm đến trên trang</small></div><button id="cx" aria-label="Đóng trợ lý">×</button></div>
+  <div class="msgs" id="msgs" aria-live="polite"></div>
+  <div class="sug" id="sug"></div>
+  <form id="cf"><input id="ci" autocomplete="off" placeholder="Hỏi về địa danh, ẩm thực, lịch sử…" aria-label="Câu hỏi của bạn"><button>Gửi</button></form>
+</section>
+<script>
+const R={b:'Miền Bắc',t:'Miền Trung – Tây Nguyên',n:'Miền Nam'};
+const P=[
+{n:'Tuyên Quang',r:'b',m:'Gồm Tuyên Quang và Hà Giang (cũ)',x:128,y:52,a:'#BFD8E8',b:'#F2E2C4',f:'#3B5B4A',
+ s:'<path d="M0 180V118l36-40 28 28 46-62 38 52 34-30 46 40 72-26V180z"/><path d="M0 180v-35l50-22 60 20 70-18 120 24v31z" fill="#27402F"/><path d="M236 108V58" stroke="#6B4E2E" stroke-width="2"/><path d="M236 58h24v14h-24z" fill="#C0272D"/>',
+ t:'Tuyên Quang mới gồm cả Hà Giang cũ, nên có cả vùng rừng núi Việt Bắc lẫn cao nguyên đá nơi địa đầu Tổ quốc. Nơi đây vừa là “thủ đô khu giải phóng” thời kháng chiến, vừa là điểm đến của những con đèo và mùa hoa tam giác mạch.',
+ sp:['Cao nguyên đá Đồng Văn – Công viên địa chất toàn cầu UNESCO','Đèo Mã Pí Lèng và sông Nho Quế','Cột cờ Lũng Cú nơi địa đầu Tổ quốc','Khu di tích quốc gia đặc biệt Tân Trào'],
+ fd:['Thắng cố','Thịt trâu gác bếp','Cam sành Hàm Yên'],se:'Tháng 10 đến tháng 11, khi hoa tam giác mạch nở rộ trên cao nguyên đá.',
+ w:['Cao nguyên đá Đồng Văn','Đèo Mã Pí Lèng','Cột cờ Lũng Cú','Tuyên Quang']},
+{n:'Cao Bằng',r:'b',m:'Giữ nguyên địa giới tỉnh',x:172,y:40,a:'#CFE3EA',b:'#EAF3EE',f:'#4C6B58',
+ s:'<path d="M0 180V96h104l8 24v60zM196 96h104v84H190z"/><path d="M112 96h84v84h-84z" fill="#F4FAFA"/><path d="M128 100v76M146 100v76M164 100v76M180 100v76" stroke="#BFD9E0" stroke-width="3"/><path d="M0 178h300" stroke="#2F4A3B" stroke-width="6"/>',
+ t:'Cao Bằng nằm sát biên giới phía Bắc, nổi tiếng với núi non, hang động và những dòng sông trong xanh. Đây cũng là nơi Bác Hồ trở về nước năm 1941, tại khu Pác Bó.',
+ sp:['Thác Bản Giốc trên sông Quây Sơn','Động Ngườm Ngao','Khu di tích Pác Bó – suối Lê-nin, hang Cốc Bó','Công viên địa chất non nước Cao Bằng (UNESCO 2018)'],
+ fd:['Hạt dẻ Trùng Khánh','Vịt quay bảy vị','Bánh cuốn Cao Bằng'],se:'Tháng 9 đến tháng 10, khi lúa chín và thác Bản Giốc nhiều nước.',
+ w:['Thác Bản Giốc','Động Ngườm Ngao','Pác Bó','Cao Bằng']},
+{n:'Hà Nội',r:'b',m:'Thủ đô, thành phố trực thuộc Trung ương',x:154,y:99,a:'#F6D9B5',b:'#FBEFD8',f:'#5C3A2E',
+ s:'<rect y="132" width="300" height="48" fill="#7FB3B0"/><path d="M128 132v-26h44v26zM136 106v-14h28v14zM144 92v-10h12v10zM150 82V70"/><path d="M20 132V88M20 100q-14 20-14 40M20 100q14 20 14 40M270 132V90M270 102q-14 20-14 38M270 102q14 20 14 38" stroke="#4E7A45" stroke-width="3" fill="none"/>',
+ t:'Hà Nội là thủ đô nghìn năm văn hiến, nơi nét cổ kính hòa quyện với nhịp sống hiện đại. Quanh hồ Hoàn Kiếm, khu phố cổ và những mái đình, chùa là nơi dễ cảm nhận chiều sâu văn hóa của người Hà Nội.',
+ sp:['Hồ Hoàn Kiếm và Tháp Rùa','Văn Miếu – Quốc Tử Giám','Hoàng thành Thăng Long (UNESCO 2010)','Khu phố cổ Hà Nội'],
+ fd:['Phở','Bún chả','Cà phê trứng','Cốm làng Vòng'],se:'Mùa thu (tháng 9 đến tháng 11), khi trời dịu mát và hoa sữa thơm trên phố.',
+ w:['Hồ Hoàn Kiếm','Hoàng thành Thăng Long','Phố cổ Hà Nội','Hà Nội']},
+{n:'Ninh Bình',r:'b',m:'Gồm Ninh Bình, Hà Nam và Nam Định (cũ)',x:159,y:130,a:'#D6EAD3',b:'#F7F1D3',f:'#2F5D4A',
+ s:'<path d="M0 140Q40 50 90 140ZM70 140Q125 20 190 140ZM170 140Q235 60 300 140Z"/><rect y="140" width="300" height="40" fill="#5E9C9A"/><path d="M110 158h60l-10 12h-40z" fill="#8A5A2B"/><path d="M140 158v-18" stroke="#8A5A2B" stroke-width="2"/>',
+ t:'Ninh Bình mới gồm cả Hà Nam và Nam Định, vùng đất gắn với cố đô Hoa Lư và những dãy núi đá vôi soi bóng xuống sông nước. Quần thể Tràng An là di sản thế giới kết hợp cả giá trị thiên nhiên lẫn văn hóa.',
+ sp:['Quần thể danh thắng Tràng An (UNESCO 2014)','Tam Cốc – Bích Động','Cố đô Hoa Lư','Nhà thờ đá Phát Diệm'],
+ fd:['Cơm cháy','Thịt dê núi','Phở Nam Định'],se:'Tháng 5 đến tháng 6, khi lúa chín vàng ở Tam Cốc.',
+ w:['Quần thể danh thắng Tràng An','Tam Cốc – Bích Động','Cố đô Hoa Lư','Ninh Bình']},
+{n:'Quảng Trị',r:'t',m:'Gồm Quảng Trị và Quảng Bình (cũ)',x:198,y:268,a:'#EBC9A3',b:'#F8E7C9',f:'#6B4F3A',
+ s:'<path d="M30 180V112h240v68z"/><path d="M128 180v-34a22 22 0 0 1 44 0v34z" fill="#3E2C20"/><path d="M150 112V68" stroke="#3E2C20" stroke-width="2"/><path d="M150 68h26v16h-26z" fill="#C0272D"/>',
+ t:'Quảng Trị mới gồm cả Quảng Bình, vùng đất mang nhiều dấu ấn lịch sử và có hệ thống hang động đồ sộ bậc nhất thế giới. Nơi đây lưu giữ ký ức những năm tháng chiến tranh, cùng vẻ đẹp kỳ vĩ của thiên nhiên.',
+ sp:['Thành cổ Quảng Trị','Cầu Hiền Lương – sông Bến Hải','Địa đạo Vịnh Mốc','Vườn quốc gia Phong Nha – Kẻ Bàng (UNESCO 2003)'],
+ fd:['Cháo canh','Mực nhảy Cảnh Dương'],se:'Từ tháng 3 đến tháng 8, thời tiết thuận lợi cho tham quan hang động.',
+ w:['Thành cổ Quảng Trị','Cầu Hiền Lương','Vườn quốc gia Phong Nha - Kẻ Bàng','Quảng Trị']},
+{n:'Huế',r:'t',m:'Thành phố trực thuộc Trung ương',x:218,y:280,a:'#F3D8B0',b:'#FBF0DB',f:'#9C2A2F',
+ s:'<path d="M10 180v-44h280v44z"/><path d="M26 108Q150 66 274 108L262 116H38z" fill="#C8962E"/><path d="M50 136v-20h200v20z" fill="#7A2A22"/><path d="M100 106v-24h100v24z"/><path d="M90 84Q150 50 210 84L200 90H100z" fill="#C8962E"/><path d="M138 180v-30a12 12 0 0 1 24 0v30z" fill="#3A1511"/>',
+ t:'Huế là cố đô của triều Nguyễn, nơi còn lưu giữ nhiều cung điện, lăng tẩm và nếp sống thanh lịch. Sông Hương, núi Ngự và những mái chùa rêu phong tạo nên nhịp sống chậm rãi, trữ tình.',
+ sp:['Hoàng thành và Đại Nội Huế (UNESCO 1993)','Ngọ Môn','Lăng Khải Định và lăng Tự Đức','Chùa Thiên Mụ bên sông Hương'],
+ fd:['Bún bò Huế','Cơm hến','Bánh bèo, nậm, lọc','Mè xửng'],se:'Tháng 2 đến tháng 4, khi thời tiết dễ chịu và ít mưa.',
+ w:['Ngọ Môn','Chùa Thiên Mụ','Lăng Khải Định','Huế']},
+{n:'Đà Nẵng',r:'t',m:'Gồm Đà Nẵng và Quảng Nam (cũ)',x:240,y:304,a:'#9FD2E8',b:'#F7E7C5',f:'#1F6F69',
+ s:'<rect y="140" width="300" height="40" fill="#2E86A6"/><path d="M14 140Q150 20 286 140" fill="none" stroke="#E4A82F" stroke-width="7"/><path d="M50 113V140M82 95V140M116 84V140M150 80V140M184 84V140M218 95V140M250 113V140" stroke="#E4A82F" stroke-width="2"/><path d="M0 140h300" stroke="#F4F4F4" stroke-width="4"/>',
+ t:'Đà Nẵng mới gồm cả Quảng Nam, nối liền thành phố biển hiện đại với hai di sản thế giới là Hội An và Mỹ Sơn. Một bên là cầu Rồng, bán đảo Sơn Trà; bên kia là phố cổ đèn lồng và những tháp Chăm cổ kính.',
+ sp:['Cầu Rồng và cầu sông Hàn','Bà Nà Hills – Cầu Vàng','Phố cổ Hội An (UNESCO 1999)','Thánh địa Mỹ Sơn (UNESCO 1999)'],
+ fd:['Mì Quảng','Cao lầu','Bánh tráng cuốn thịt heo'],se:'Tháng 2 đến tháng 5, khi trời nắng đẹp và biển lặng.',
+ w:['Cầu Rồng','Bà Nà','Phố cổ Hội An','Mỹ Sơn','Đà Nẵng']},
+{n:'Gia Lai',r:'t',m:'Gồm Gia Lai và Bình Định (cũ)',x:240,y:380,a:'#BFE0C8',b:'#F5ECC4',f:'#6A4B2A',
+ s:'<path d="M0 180V130Q70 90 140 130T300 120V180z" fill="#6E9A5B"/><path d="M118 180v-46h64v46z"/><path d="M104 134L150 40l46 94z" fill="#8B5E2F"/><path d="M134 180v-24h32v24z" fill="#2E1C0C"/>',
+ t:'Gia Lai mới gồm cả Bình Định, trải từ cao nguyên đất đỏ bazan xuống bờ biển Quy Nhơn. Nơi đây có không gian văn hóa cồng chiêng Tây Nguyên, cùng miền đất võ cổ truyền và những tháp Chăm cổ.',
+ sp:['Biển Hồ (T’Nưng) ở Pleiku','Núi lửa Chư Đăng Ya','Eo Gió và Kỳ Co ở Quy Nhơn','Tháp Đôi và Bảo tàng Quang Trung'],
+ fd:['Phở khô Gia Lai','Bún chả cá Quy Nhơn','Bánh ít lá gai'],se:'Tháng 11 đến tháng 12 có hoa dã quỳ trên cao nguyên; biển Quy Nhơn đẹp từ tháng 2 đến tháng 8.',
+ w:['Biển Hồ','Kỳ Co','Eo Gió','Quy Nhơn','Gia Lai']},
+{n:'Hồ Chí Minh',r:'n',m:'Gồm TP. Hồ Chí Minh, Bình Dương và Bà Rịa – Vũng Tàu (cũ)',x:188,y:509,a:'#F2B880',b:'#F9E4C0',f:'#34506B',
+ s:'<path d="M215 180V50l8-22 8 22v130z" fill="#2B4157"/><path d="M250 180v-70h24v70zM180 180v-50h22v50z" fill="#4A6580"/><path d="M70 180V96h22v84zM128 180V96h22v84zM92 180v-34h36v34z" fill="#9B4A2E"/><path d="M70 96l11-30 11 30zM128 96l11-30 11 30z" fill="#9B4A2E"/>',
+ t:'Thành phố Hồ Chí Minh mới gồm cả Bình Dương và Bà Rịa – Vũng Tàu, là trung tâm kinh tế năng động và nơi giao thoa của nhiều nền văn hóa. Từ phố thị Sài Gòn sôi động đến bãi biển Vũng Tàu và Côn Đảo, mỗi nơi một sắc thái.',
+ sp:['Nhà thờ Đức Bà và Bưu điện Trung tâm','Dinh Độc Lập và chợ Bến Thành','Địa đạo Củ Chi','Bãi Sau và Tượng Chúa Kitô Vua ở Vũng Tàu','Côn Đảo'],
+ fd:['Cơm tấm','Hủ tiếu','Bánh mì','Bánh khọt Vũng Tàu'],se:'Tháng 12 đến tháng 4, mùa khô ít mưa.',
+ w:['Nhà thờ Đức Bà Sài Gòn','Chợ Bến Thành','Địa đạo Củ Chi','Thành phố Hồ Chí Minh']},
+{n:'Tây Ninh',r:'n',m:'Gồm Tây Ninh và Long An (cũ)',x:172,y:484,a:'#CFE0F0',b:'#F1F1DD',f:'#2F5A3C',
+ s:'<path d="M40 180Q150-30 262 180z"/><path d="M60 180Q150 0 250 180z" fill="#3E7249" opacity=".6"/><path d="M96 88L236 150" stroke="#2A2A2A" stroke-width="1.5"/><rect x="150" y="115" width="12" height="9" rx="2" fill="#C0272D"/>',
+ t:'Tây Ninh mới gồm cả Long An, nơi có núi Bà Đen sừng sững giữa đồng bằng Nam Bộ và Tòa Thánh Cao Đài độc đáo. Vùng đất này còn có hồ Dầu Tiếng rộng lớn và những cánh đồng ngập nước của Đồng Tháp Mười.',
+ sp:['Núi Bà Đen – đỉnh núi cao nhất Nam Bộ','Tòa Thánh Cao Đài Tây Ninh','Hồ Dầu Tiếng','Vườn quốc gia Lò Gò – Xa Mát'],
+ fd:['Bánh canh Trảng Bàng','Bánh tráng phơi sương','Muối tôm','Mãng cầu'],se:'Tháng 1 đến tháng 4, mùa khô thuận lợi để leo núi và dự lễ hội đầu xuân.',
+ w:['Núi Bà Đen','Tòa Thánh Tây Ninh','Hồ Dầu Tiếng','Tây Ninh']},
+{n:'An Giang',r:'n',m:'Gồm An Giang và Kiên Giang (cũ)',x:128,y:524,a:'#E9F0D2',b:'#F7F4DA',f:'#4E8A52',
+ s:'<rect y="124" width="300" height="56" fill="#7BA9A0"/><g stroke="#3B6A44" stroke-width="3" fill="none"><path d="M40 124V70M80 124V56M120 124V74M170 124V50M215 124V68M260 124V60"/></g><ellipse cx="40" cy="66" rx="16" ry="12"/><ellipse cx="80" cy="52" rx="18" ry="13"/><ellipse cx="120" cy="70" rx="15" ry="11"/><ellipse cx="170" cy="46" rx="19" ry="14"/><ellipse cx="215" cy="64" rx="16" ry="12"/><ellipse cx="260" cy="56" rx="17" ry="12"/><path d="M120 150h60l-10 10h-40z" fill="#8A5A2B"/>',
+ t:'An Giang mới gồm cả Kiên Giang, trải từ vùng Bảy Núi bên biên giới đến đảo ngọc Phú Quốc. Đây là miền đất có rừng tràm xanh mát, những ngôi miếu linh thiêng và đời sống sông nước đặc trưng.',
+ sp:['Rừng tràm Trà Sư','Núi Sam và Miếu Bà Chúa Xứ ở Châu Đốc','Núi Cấm vùng Bảy Núi','Phú Quốc và Hà Tiên'],
+ fd:['Mắm Châu Đốc','Bún cá','Nước mắm Phú Quốc'],se:'Tháng 9 đến tháng 11, mùa nước nổi, rừng tràm đẹp nhất.',
+ w:['Rừng tràm Trà Sư','Núi Sam','Phú Quốc','An Giang']},
+{n:'Cà Mau',r:'n',m:'Gồm Cà Mau và Bạc Liêu (cũ)',x:126,y:572,a:'#BFDCE8',b:'#F8E9C8',f:'#2B5D3E',
+ s:'<rect y="128" width="300" height="52" fill="#3F8FA8"/><path d="M0 128q20-10 40 0t40 0 40 0 40 0 40 0 40 0 40 0" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/><ellipse cx="60" cy="122" rx="40" ry="16"/><ellipse cx="112" cy="124" rx="30" ry="12"/><path d="M160 156h50l-8 10h-34zM185 156V108l22 40z" fill="#fff"/>',
+ t:'Cà Mau mới gồm cả Bạc Liêu, nơi có điểm cực Nam của Tổ quốc và những cánh rừng đước, rừng tràm bạt ngàn. Vùng đất này còn gắn với bản “Dạ cổ hoài lang” và các cánh đồng điện gió ven biển.',
+ sp:['Mũi Cà Mau và cột mốc tọa độ quốc gia','Vườn quốc gia Mũi Cà Mau (khu dự trữ sinh quyển UNESCO)','Vườn quốc gia U Minh Hạ','Cánh đồng điện gió Bạc Liêu'],
+ fd:['Cua Cà Mau','Tôm khô','Mật ong U Minh'],se:'Tháng 12 đến tháng 4, mùa khô thuận lợi để đi rừng và ra biển.',
+ w:['Mũi Cà Mau','Vườn quốc gia Mũi Cà Mau','Bạc Liêu','Cà Mau']}
+];
+
+
+const X={
+'Tuyên Quang':{mo:1,tl:'Thủ đô Khu giải phóng',ds:'Mở đầu năm mới bằng sắc xanh của núi rừng Việt Bắc và hình ảnh Tân Trào lịch sử. Địa danh này mang ý nghĩa về sự khởi nguồn, nhắc nhớ về cội nguồn cách mạng và tinh thần đoàn kết dân tộc trong những ngày đầu xuân.',
+ gt:[['Cây đa Tân Trào và lễ xuất quân','Ngày 16/8/1945, dưới gốc cây đa ở Tân Trào, Quân giải phóng làm lễ xuất quân tiến về giải phóng các đô thị. Cây đa nhờ đó trở thành chứng nhân của mùa thu Cách mạng.'],['Con đường Hạnh Phúc và đèo Mã Pí Lèng','Đường Hạnh Phúc nối Hà Giang với Đồng Văn được mở trong những năm 1959–1965, chủ yếu bằng sức người, với sự góp sức của thanh niên nhiều dân tộc. Tên Mã Pí Lèng thường được giải nghĩa là “sống mũi ngựa”.']],
+ ls:[[1945,'6/1945','Khu giải phóng Việt Bắc ra đời, Tân Trào trở thành trung tâm chỉ đạo cách mạng.'],[1945,'16–17/8/1945','Quốc dân Đại hội họp ở Tân Trào, thành lập Ủy ban Dân tộc giải phóng.'],[1947,'1947','Chiến dịch Việt Bắc thu đông, Tuyên Quang nằm trong căn cứ địa góp phần làm thất bại kế hoạch của Pháp.'],[1959,'1959–1965','Mở con đường Hạnh Phúc nối Hà Giang với Đồng Văn.'],[2010,'2010','Cao nguyên đá Đồng Văn được UNESCO công nhận là Công viên địa chất toàn cầu.'],[2025,'2025','Tuyên Quang hợp nhất với Hà Giang.']]},
+'Cao Bằng':{mo:2,tl:'Non nước biên cương',ds:'Nổi bật với vẻ đẹp hùng vĩ của thác Bản Giốc và di tích Pác Bó. Tháng 2 gắn liền với dấu chân Bác Hồ trở về Tổ quốc, biểu trưng cho ý chí kiên cường, độc lập và vẻ đẹp nguyên sơ nơi phên dậu phía Bắc.',
+ gt:[['Bác Hồ trở về Tổ quốc','Ngày 28/1/1941, Bác Hồ qua cột mốc biên giới số 108 để về nước, sống và làm việc ở hang Cốc Bó. Bác đặt tên dòng suối là suối Lê-nin và ngọn núi đối diện là núi Các Mác.'],['Ngườm Ngao – hang hổ','Trong tiếng Tày, “ngườm” là hang và “ngao” là hổ, nên Ngườm Ngao thường được hiểu là “hang hổ”. Hang nổi tiếng với những khối thạch nhũ óng ánh.']],
+ ls:[[1592,'1592–1677','Nhà Mạc lui về Cao Bằng, duy trì thế lực cát cứ đến năm 1677.'],[1941,'28/1/1941','Bác Hồ về nước qua cột mốc 108, đặt cơ sở cách mạng tại Pác Bó.'],[1944,'22/12/1944','Đội Việt Nam Tuyên truyền Giải phóng quân thành lập tại Cao Bằng.'],[1950,'1950','Chiến dịch Biên giới giải phóng Cao Bằng, mở thông đường sang các nước bạn.'],[2018,'2018','Công viên địa chất non nước Cao Bằng được UNESCO công nhận.']]},
+'Hà Nội':{mo:3,tl:'Trái tim ngàn năm văn hiến',ds:'Tái hiện nét cổ kính của Khuê Văn Các và Hồ Gươm trầm mặc. Giữa nhịp sống hiện đại, hình ảnh Hà Nội đại diện cho chiều sâu tri thức, sự thanh lịch và mạch nguồn văn hóa Thăng Long bền bỉ qua ngàn năm.',
+ gt:[['Rùa Vàng và thanh gươm thần','Truyền thuyết kể rằng sau khi đánh đuổi quân Minh, Lê Lợi dạo thuyền trên hồ thì Rùa Vàng nổi lên đòi lại thanh gươm thần. Từ đó hồ mang tên Hoàn Kiếm, nghĩa là “trả gươm”.'],['Rồng bay lên ở Thăng Long','Năm 1010, vua Lý Thái Tổ dời đô từ Hoa Lư ra thành Đại La. Tương truyền khi thuyền đến nơi, có rồng vàng bay lên nên vua đổi tên là Thăng Long, nghĩa là “rồng bay lên”.']],
+ ls:[[1010,'1010','Lý Thái Tổ dời đô từ Hoa Lư về Thăng Long.'],[1070,'1070–1076','Dựng Văn Miếu rồi lập Quốc Tử Giám, trường đại học đầu tiên của nước ta.'],[1831,'1831','Vua Minh Mạng đặt tên tỉnh Hà Nội.'],[1945,'2/9/1945','Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập tại Quảng trường Ba Đình.'],[1954,'10/10/1954','Giải phóng Thủ đô.'],[1972,'12/1972','Chiến thắng “Hà Nội – Điện Biên Phủ trên không”.']]},
+'Ninh Bình':{mo:4,tl:'Cố đô Hoa Lư – Tràng An',ds:'Sự hòa quyện kỳ vĩ giữa di sản thiên nhiên thế giới và dấu ấn kinh đô xưa. Tháng 4 là dịp hướng về cội nguồn dân tộc, tôn vinh khát vọng tự chủ và sự giao hòa tuyệt mỹ giữa con người với thiên nhiên.',
+ gt:[['Cờ lau tập trận','Truyền thuyết kể lúc nhỏ Đinh Bộ Lĩnh chăn trâu, thường bẻ bông lau làm cờ cho đám trẻ tập trận. Lớn lên, ông dẹp loạn 12 sứ quân và lên ngôi hoàng đế.'],['Hang Bích Động – “đệ nhị động”','Tương truyền chúa Trịnh Sâm khi ghé thăm đã khen cảnh đẹp và ca ngợi đây là “Nam thiên đệ nhị động”, nghĩa là hang đẹp thứ hai của trời Nam.']],
+ ls:[[968,'968','Đinh Bộ Lĩnh lên ngôi, đặt quốc hiệu Đại Cồ Việt, đóng đô ở Hoa Lư.'],[1010,'1010','Kinh đô dời về Thăng Long, Hoa Lư trở thành cố đô.'],[1875,'1875–1898','Linh mục Trần Lục xây dựng quần thể nhà thờ đá Phát Diệm.'],[2014,'2014','Quần thể danh thắng Tràng An được UNESCO ghi danh di sản thế giới.'],[2025,'2025','Ninh Bình hợp nhất với Hà Nam và Nam Định.']]},
+'Quảng Trị':{mo:5,tl:'Khúc tráng ca bất tử',ds:'Hình ảnh Thành Cổ Quảng Trị và dòng Thạch Hãn lặng lẽ trôi. Nằm ở khúc ruột miền Trung, địa danh này là biểu tượng thiêng liêng của lòng yêu nước, sự hy sinh cao cả để đổi lấy hòa bình hôm nay.',
+ gt:[['81 ngày đêm ở Thành Cổ','Từ ngày 28/6 đến 16/9/1972, quân và dân ta giữ Thành Cổ giữa mưa bom bão đạn. Rất nhiều chiến sĩ đã hy sinh, nhiều người được an nghỉ dưới dòng Thạch Hãn.'],['Cầu Hiền Lương hai nửa hai màu','Từ năm 1954 đến năm 1975, sông Bến Hải ở vĩ tuyến 17 là ranh giới tạm thời chia cắt hai miền Nam – Bắc. Cây cầu bắc qua sông từng có hai nửa được sơn hai màu khác nhau.']],
+ ls:[[1627,'1627–1672','Chiến tranh Trịnh – Nguyễn diễn ra dọc vùng sông Gianh, Quảng Bình.'],[1954,'1954','Hiệp định Giơ-ne-vơ chọn sông Bến Hải, vĩ tuyến 17 làm giới tuyến quân sự tạm thời.'],[1972,'28/6–16/9/1972','81 ngày đêm bảo vệ Thành Cổ Quảng Trị.'],[1975,'1975','Đất nước thống nhất, Quảng Trị bước vào thời kỳ hàn gắn chiến tranh.'],[2003,'2003','Phong Nha – Kẻ Bàng được UNESCO công nhận di sản thiên nhiên thế giới.']]},
+'Huế':{mo:6,tl:'Kinh đô di sản',ds:'Mang nét trầm mặc, thơ mộng của Đại Nội và dòng sông Hương. Huế đại diện cho đỉnh cao của nghệ thuật cung đình, nhã nhạc và sự tinh tế trong tâm hồn người Việt, giữ gìn trọn vẹn hồn cốt văn hóa truyền thống.',
+ gt:[['Huyền Trân công chúa và hai châu Ô, Lý','Năm 1306, công chúa Huyền Trân về làm dâu vua Chăm Pa Chế Mân. Hai châu Ô và Lý được dâng làm sính lễ, sau đổi tên thành Thuận Châu và Hóa Châu, tức vùng Thuận Hóa – Phú Xuân sau này.'],['Bà lão áo đỏ và chùa Thiên Mụ','Truyền thuyết kể rằng có một bà lão áo đỏ quần xanh báo rằng sẽ có vị chân chúa lập chùa để tụ linh khí. Năm 1601, chúa Nguyễn Hoàng cho dựng chùa và đặt tên Thiên Mụ.']],
+ ls:[[1306,'1306','Huyền Trân công chúa về nước Chăm Pa, vùng Thuận Hóa sáp nhập vào Đại Việt.'],[1558,'1558','Nguyễn Hoàng vào trấn thủ Thuận Hóa, mở nền móng cho Đàng Trong.'],[1802,'1802','Gia Long lên ngôi, chọn Phú Xuân – Huế làm kinh đô nhà Nguyễn.'],[1945,'30/8/1945','Vua Bảo Đại thoái vị tại Ngọ Môn, chấm dứt chế độ quân chủ.'],[1968,'1968','Trận chiến Tết Mậu Thân diễn ra ác liệt tại Huế.'],[1993,'1993','Quần thể di tích Cố đô Huế được UNESCO công nhận di sản văn hóa thế giới.']]},
+'Đà Nẵng':{mo:7,tl:'Thành phố của những nhịp cầu',ds:'Bức tranh năng động với cầu Rồng, bán đảo Sơn Trà và biển xanh. Đà Nẵng là điểm giao thoa giữa di sản miền Trung và hơi thở hội nhập, tượng trưng cho sức sống trẻ trung, vươn mình ra biển lớn.',
+ gt:[['Cầu Rồng phun lửa, phun nước','Cầu Rồng dài 666 m, khánh thành ngày 29/3/2013, có thân hình con rồng vàng uốn lượn. Mỗi tối thứ Bảy và Chủ nhật, rồng phun lửa và phun nước thu hút đông đảo du khách.'],['Ngũ Hành Sơn và thuyết ngũ hành','Cụm núi đá vôi gồm năm ngọn là Kim, Mộc, Thủy, Hỏa, Thổ, được cho là do vua Minh Mạng đặt tên theo thuyết ngũ hành vào năm 1837. Bên trong có nhiều hang động và chùa cổ.']],
+ ls:[[1858,'1/9/1858','Pháp nổ súng tấn công Đà Nẵng, mở đầu cuộc xâm lược Việt Nam.'],[1888,'1888','Đà Nẵng bị Pháp biến thành nhượng địa, gọi là Tourane.'],[1965,'1965','Quân Mỹ đổ bộ lên Đà Nẵng.'],[1975,'29/3/1975','Giải phóng Đà Nẵng.'],[1997,'1997','Đà Nẵng trở thành thành phố trực thuộc Trung ương.'],[1999,'1999','Hội An và Mỹ Sơn được UNESCO công nhận.']]},
+'Gia Lai':{mo:8,tl:'Đại ngàn Tây Nguyên',ds:'Tái hiện không gian văn hóa cồng chiêng, nhà Rông và Biển Hồ T’Nưng. Tháng 8 mang âm hưởng phóng khoáng của núi rừng, tôn vinh bản sắc văn hóa đa dạng và sức sống mãnh liệt của đồng bào các dân tộc Tây Nguyên.',
+ gt:[['Ba anh em Tây Sơn dựng cờ khởi nghĩa','Năm 1771, ba anh em Nguyễn Nhạc, Nguyễn Huệ, Nguyễn Lữ khởi nghĩa ở Tây Sơn. Phong trào về sau lật đổ các thế lực phong kiến và đánh tan quân xâm lược Xiêm, Thanh.'],['Cồng chiêng và nhà Rông','Không gian văn hóa cồng chiêng Tây Nguyên được UNESCO ghi danh năm 2005. Với nhiều dân tộc ở đây, nhà Rông là nơi sinh hoạt chung của buôn làng, nơi tiếng cồng chiêng vang lên trong các lễ hội.']],
+ ls:[[1471,'1471','Vua Lê Thánh Tông chiếm thành Đồ Bàn của Chăm Pa, mở rộng bờ cõi về phía Nam.'],[1771,'1771','Khởi nghĩa Tây Sơn bùng nổ.'],[1789,'1789','Quang Trung đại phá quân Thanh.'],[1975,'3/1975','Chiến dịch Tây Nguyên mở màn, Pleiku được giải phóng.'],[2005,'2005','Không gian văn hóa cồng chiêng Tây Nguyên được UNESCO ghi danh.'],[2025,'2025','Gia Lai hợp nhất với Bình Định.']]},
+'Hồ Chí Minh':{mo:9,tl:'Hòn ngọc Viễn Đông',ds:'Nổi bật với Bến Nhà Rồng, Dinh Độc Lập bên cạnh những tòa nhà hiện đại. Gắn với tháng của Tết Độc lập, nơi đây là biểu tượng của tinh thần năng động, sáng tạo, tiên phong và khát vọng phát triển không ngừng của đất nước.',
+ gt:[['Bến Nhà Rồng – ngày ra đi tìm đường cứu nước','Ngày 5/6/1911, người thanh niên Nguyễn Tất Thành rời Bến Nhà Rồng trên con tàu Amiral Latouche-Tréville để đi tìm đường cứu nước.'],['Xe tăng 390 húc đổ cổng Dinh Độc Lập','Sáng ngày 30/4/1975, xe tăng mang số hiệu 390 húc đổ cổng Dinh Độc Lập, báo hiệu thời khắc thống nhất đất nước.']],
+ ls:[[1698,'1698','Nguyễn Hữu Cảnh lập phủ Gia Định, đặt nền móng cho vùng đất Sài Gòn – Gia Định.'],[1859,'1859','Pháp chiếm thành Gia Định.'],[1911,'1911','Nguyễn Tất Thành ra đi từ Bến Nhà Rồng.'],[1945,'25/8/1945','Nhân dân Sài Gòn giành chính quyền trong Cách mạng tháng Tám.'],[1975,'30/4/1975','Giải phóng Sài Gòn, thống nhất đất nước.'],[1976,'1976','Sài Gòn – Gia Định được đổi tên thành thành phố Hồ Chí Minh.'],[1986,'1986','Đất nước bước vào thời kỳ Đổi mới, thành phố trở thành đầu tàu kinh tế.']]},
+'Tây Ninh':{mo:10,tl:'Nóc nhà Nam Bộ',ds:'Hình ảnh núi Bà Đen sừng sững giữa mây trời và Tòa Thánh độc đáo. Tây Ninh mang ý nghĩa về đời sống tâm linh phong phú, sự giao thoa văn hóa đặc sắc và nét hào sảng, kiên trung của vùng đất miền Đông gian lao mà anh dũng.',
+ gt:[['Nàng Lý Thị Thiên Hương trên núi Bà','Tương truyền, nàng Lý Thị Thiên Hương người Gò Kén giữ lòng thủy chung rồi mất trên núi, được dân lập miếu thờ và tôn là Linh Sơn Thánh Mẫu. Từ đó ngọn núi mang tên Bà Đen.'],['Đạo Cao Đài khai sinh ở Tây Ninh','Đạo Cao Đài chính thức ra đời năm 1926. Tòa Thánh ở Hòa Thành là trung tâm của đạo, nổi bật với kiến trúc kết hợp nhiều phong cách và biểu tượng Thiên Nhãn.']],
+ ls:[[1926,'1926','Đạo Cao Đài ra đời và đặt trung tâm tại Tây Ninh.'],[1960,'20/12/1960','Mặt trận Dân tộc giải phóng miền Nam Việt Nam thành lập tại Tây Ninh.'],[1967,'1967','Chiến dịch Junction City diễn ra trên vùng chiến khu Tây Ninh.'],[1975,'1975','Tây Ninh được giải phóng, đất nước thống nhất.'],[1981,'1981–1985','Xây dựng hồ Dầu Tiếng, một trong những công trình thủy lợi lớn nhất cả nước.'],[2025,'2025','Tây Ninh hợp nhất với Long An.']]},
+'An Giang':{mo:11,tl:'Vùng đất Bảy Núi, sông nước biên thùy',ds:'Đặc trưng bởi rừng tràm Trà Sư, những cánh đồng thốt nốt và văn hóa đa dân tộc Kinh – Khmer – Chăm – Hoa. Địa danh này tôn vinh vẻ đẹp trù phú của miền Tây Nam Bộ và sự gắn kết cộng đồng bền chặt.',
+ gt:[['Thoại Ngọc Hầu và kênh Vĩnh Tế','Từ năm 1819 đến 1824, hàng vạn dân công đào kênh Vĩnh Tế dài khoảng 90 km dưới sự chỉ huy của Thoại Ngọc Hầu. Kênh vừa phục vụ giao thông, vừa có ý nghĩa bảo vệ biên giới.'],['Bà Chúa Xứ núi Sam','Tương truyền tượng Bà ở núi Sam được dân làng rước xuống núi nhờ sức của chín cô gái trẻ. Miếu Bà Chúa Xứ ở Châu Đốc đến nay vẫn là nơi hành hương lớn của miền Tây.']],
+ ls:[[1708,'1708','Mạc Cửu dâng đất Hà Tiên cho chúa Nguyễn.'],[1819,'1819–1824','Đào kênh Vĩnh Tế dọc biên giới Tây Nam.'],[1832,'1832','Vua Minh Mạng lập tỉnh An Giang.'],[1977,'1977–1979','Quân dân vùng biên giới Tây Nam chiến đấu bảo vệ lãnh thổ trước các cuộc tấn công của Khmer Đỏ.'],[2025,'2025','An Giang hợp nhất với Kiên Giang.']]},
+'Cà Mau':{mo:12,tl:'Đất Mũi thiêng liêng',ds:'Khép lại một năm bằng hình ảnh mũi tàu hướng ra biển lớn và rừng đước ngập mặn. Cà Mau là điểm cực Nam của Tổ quốc, mang ý nghĩa trọn vẹn của một hành trình thống nhất, khẳng định chủ quyền thiêng liêng và niềm tự hào về dáng hình chữ S vẹn toàn.',
+ gt:[['“Dạ cổ hoài lang” và vọng cổ','Nhạc sĩ Cao Văn Lầu (Sáu Lầu) ở Bạc Liêu sáng tác bản “Dạ cổ hoài lang” vào khoảng năm 1919. Bản nhạc về sau phát triển thành vọng cổ, linh hồn của cải lương.'],['“Nước đen” và vùng đất lấn ra biển','Tên Cà Mau được cho là bắt nguồn từ tiếng Khmer “Tưk Khmau” nghĩa là nước đen, gợi màu nước vùng rừng tràm. Phù sa bồi đắp khiến mũi đất tiếp tục lấn dần ra biển.']],
+ ls:[[1708,'Thế kỷ XVIII','Người Việt, Khmer, Hoa cùng khai phá vùng đất Cà Mau.'],[1882,'1882','Pháp lập tỉnh Bạc Liêu.'],[1919,'Khoảng 1919','Bản “Dạ cổ hoài lang” ra đời tại Bạc Liêu.'],[1975,'1975','Cà Mau được giải phóng.'],[2009,'2009','Mũi Cà Mau được UNESCO công nhận là khu dự trữ sinh quyển thế giới.'],[2025,'2025','Cà Mau hợp nhất với Bạc Liêu.']]}
+};
+P.forEach(p=>Object.assign(p,X[p.n]));
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let cur=-1,region='all',tok=0,quiz=null;
+const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const seen=new Set(LS.get('seen')||[]),saved=new Set(LS.get('saved')||[]);
+const keep=()=>{LS.set('seen',[...seen]);LS.set('saved',[...saved])};
+const cache={};
+
+const scene=(p,lbl=true)=>`<svg viewBox="0 0 300 180" role="img" aria-label="${lbl?'Tranh minh họa '+p.n:'Tranh minh họa một điểm đến'}"><defs><linearGradient id="g${P.indexOf(p)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.a}"/><stop offset="1" stop-color="${p.b}"/></linearGradient></defs><rect width="300" height="180" fill="url(#g${P.indexOf(p)})"/><circle class="sun" cx="235" cy="45" r="16" fill="#FFE29A"/><g class="cloud" fill="#fff" opacity=".75"><ellipse cx="50" cy="40" rx="24" ry="7"/><ellipse cx="68" cy="34" rx="16" ry="6"/></g><g fill="${p.f}">${p.s}</g></svg>`;
+
+/* Bản đồ */
+const outline='M6 44L24 32 44 38 80 28 96 12 132 6 160 22 188 26 212 60 240 64 240 80 216 100 192 112 184 132 156 156 148 188 172 220 184 240 208 264 224 280 248 296 276 328 284 380 292 420 292 460 286 484 260 500 224 516 200 526 184 544 168 564 144 592 114 594 114 564 120 540 100 524 120 506 154 492 164 474 176 470 188 460 216 448 220 420 222 380 212 356 220 328 180 272 152 232 128 208 104 184 88 164 96 140 80 120 40 100 20 92 6 80Z';
+$('#map').innerHTML=`<path class="land" d="${outline}"/>
+<text class="sea" x="320" y="420">Biển Đông</text>
+<g class="isl"><circle cx="396" cy="282" r="2.5"/><circle cx="403" cy="288" r="2.5"/><circle cx="410" cy="281" r="2.5"/><text x="402" y="272">Quần đảo Hoàng Sa</text></g>
+<g class="isl"><circle cx="404" cy="560" r="2.5"/><circle cx="414" cy="568" r="2.5"/><circle cx="422" cy="558" r="2.5"/><circle cx="430" cy="570" r="2.5"/><text x="414" y="548">Quần đảo Trường Sa</text></g>`+
+P.map((p,i)=>`<g class="pin" data-i="${i}" tabindex="0" role="button" aria-label="${p.n}" transform="translate(${p.x} ${p.y})"><circle class="halo" r="14"/><circle class="dot" r="7"/><text x="13" y="4">${p.n}</text></g>`).join('');
+$('#chips').innerHTML=P.map((p,i)=>`<button class="chip" data-i="${i}"><span class="m">Tháng ${p.mo}</span><span class="nm">${p.n}</span></button>`).join('');
+
+const visible=()=>P.map((p,i)=>i).filter(i=>region==='all'||P[i].r===region);
+function mark(){
+  document.querySelectorAll('.pin,.chip').forEach(e=>{const i=+e.dataset.i;e.classList.toggle('on',i===cur);e.classList.toggle('dim',region!=='all'&&P[i].r!==region);e.classList.toggle('seen',seen.has(i))});
+}
+$('#map').addEventListener('click',e=>{const g=e.target.closest('.pin');if(g)pick(+g.dataset.i)});
+$('#map').addEventListener('keydown',e=>{const g=e.target.closest('.pin');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(+g.dataset.i)}});
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b)pick(+b.dataset.i)});
+$('#seg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;region=b.dataset.r;document.querySelectorAll('#seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));mark()});
+$('#rnd').onclick=()=>{const v=visible().filter(i=>i!==cur);pick(v[Math.random()*v.length|0])};
+$('#quiz').onclick=startQuiz;
+
+function intro(){
+  tok++;quiz=null;cur=-1;mark();stat();
+  $('#panel').innerHTML='<div class="intro"><h2>Chọn một điểm đến</h2><p>Bấm vào ghim trên bản đồ hoặc chọn một tháng trong lịch phía trên. Mỗi nơi có ảnh thật, tranh vẽ, giai thoại và các giai đoạn lịch sử. Hãy thử “Khám phá ngẫu nhiên”, lưu những nơi bạn thích vào “Hành trình của tôi” hoặc kiểm tra hiểu biết với “Đố vui”.</p></div>';
+}
+
+/* Ảnh thật từ Wikipedia */
+async function getPhotos(p){
+  if(cache[p.n])return cache[p.n];
+  const rs=await Promise.allSettled(p.w.map(t=>fetch('https://vi.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(t)).then(r=>r.ok?r.json():Promise.reject())));
+  const seen=new Set(),out=[];
+  rs.forEach(r=>{if(r.status!=='fulfilled')return;const d=r.value,th=d.thumbnail&&d.thumbnail.source;if(!th||seen.has(th))return;seen.add(th);
+    out.push({big:th.replace(/\/\d+px-/,'/960px-'),small:th,cap:d.title,url:d.content_urls&&d.content_urls.desktop&&d.content_urls.desktop.page||'#'})});
+  return cache[p.n]=out.slice(0,5);
+}
+function setTab(t){
+  $('#ph').hidden=t!=='photo';$('#art').hidden=t!=='art';
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===t));
+}
+function showPhotos(list){
+  const box=$('#ph');
+  if(!list.length){box.innerHTML='<p class="note">Chưa tải được ảnh thật (cần kết nối Internet). Bạn có thể xem tranh vẽ minh họa.</p>';setTab('art');return}
+  box.innerHTML=`<figure><img id="main" alt=""><figcaption id="cap"></figcaption></figure><div class="thumbs">${list.map((x,k)=>`<button data-k="${k}" aria-label="Xem ảnh ${k+1}"><img src="${esc(x.small)}" alt=""></button>`).join('')}</div>`;
+  const set=k=>{const x=list[k],m=$('#main');m.onerror=()=>{m.onerror=null;m.src=x.small};m.src=x.big;m.alt=x.cap+' (ảnh thật)';
+    $('#cap').innerHTML=`${esc(x.cap)} · <a href="${esc(x.url)}" target="_blank" rel="noopener">Nguồn: Wikipedia</a>`;
+    box.querySelectorAll('.thumbs button').forEach((b,j)=>b.classList.toggle('on',j===k))};
+  box.querySelectorAll('.thumbs button').forEach(b=>b.onclick=()=>set(+b.dataset.k));set(0);
+}
+
+function stat(){
+  $('#pt').textContent=seen.size>=12?'Bạn đã khám phá đủ 12 điểm đến!':'Đã khám phá '+seen.size+'/12';
+  $('#pbar').style.width=seen.size/12*100+'%';
+  $('#trip').textContent='Hành trình của tôi ('+saved.size+')';
+}
+const ERA=['Trước 1858 (phong kiến)','1858–1944 (Pháp thuộc)','1945–1974 (cách mạng, kháng chiến)','Từ 1975 (thống nhất, đổi mới)'];
+const era=y=>y<1858?0:y<1945?1:y<1975?2:3;
+function drawTL(p,e){
+  const l=p.ls.filter(x=>e==='all'||era(x[0])===+e);
+  $('#tl').innerHTML=l.length?l.map(x=>`<li class="e${era(x[0])}"><b>${x[1]}</b><span>${x[2]}</span></li>`).join(''):'<li class="e0"><span>Chưa có mốc nào của điểm đến này trong giai đoạn đã chọn.</span></li>';
+}
+function pick(i){
+  quiz=null;cur=i;seen.add(i);keep();mark();stat();
+  const p=P[i],t=++tok;
+  $('#panel').innerHTML=`<div class="d">
+  <div class="media"><div class="tabs"><button data-t="photo" aria-pressed="true">Ảnh thật</button><button data-t="art" aria-pressed="false">Tranh vẽ</button></div>
+   <div class="stage"><div id="ph"><p class="note">Đang tải ảnh…</p></div><div id="art" hidden>${scene(p)}</div></div></div>
+  <div class="hd"><div><h2>${p.n}</h2><p class="tags"><span class="tag">Tháng ${p.mo}</span><span class="tag alt">${R[p.r]}</span></p></div><button class="star" id="st"></button></div>
+  <p class="sub">${p.tl}</p><p class="lead">${p.ds}</p><p class="merge">${p.m}</p>
+  <div class="stabs"><button data-s="sa" aria-pressed="true">Tổng quan</button><button data-s="sb" aria-pressed="false">Giai thoại</button><button data-s="sc" aria-pressed="false">Giai đoạn lịch sử</button></div>
+  <section id="sa"><p>${p.t}</p>
+   <h3>Điểm đến nổi bật</h3><ul>${p.sp.map(s=>`<li>${s}</li>`).join('')}</ul>
+   <h3>Ẩm thực</h3><div class="food">${p.fd.map(s=>`<span>${s}</span>`).join('')}</div>
+   <h3>Thời điểm nên đi</h3><p>${p.se}</p></section>
+  <section id="sb" hidden>${p.gt.map(g=>`<details><summary>${g[0]}</summary><p>${g[1]}</p></details>`).join('')}<p class="hint">Bấm vào từng tiêu đề để đọc câu chuyện.</p></section>
+  <section id="sc" hidden><div class="eras" id="er"><button data-e="all" aria-pressed="true">Tất cả</button>${ERA.map((e,k)=>`<button data-e="${k}" aria-pressed="false">${e}</button>`).join('')}</div><ol class="tl" id="tl"></ol></section>
+  <div class="nav"><button id="pv">Điểm trước</button><button id="nx">Điểm tiếp</button></div></div>`;
+  document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.t));
+  document.querySelectorAll('.stabs button').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.stabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    ['sa','sb','sc'].forEach(id=>$('#'+id).hidden=id!==b.dataset.s)});
+  document.querySelectorAll('#er button').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('#er button').forEach(x=>x.setAttribute('aria-pressed',x===b));drawTL(p,b.dataset.e)});
+  drawTL(p,'all');
+  const st=$('#st'),paint=()=>{const on=saved.has(i);st.setAttribute('aria-pressed',on);st.textContent=on?'★ Đã lưu vào hành trình':'☆ Lưu vào hành trình'};
+  paint();st.onclick=()=>{saved.has(i)?saved.delete(i):saved.add(i);keep();stat();paint()};
+  const go=d=>{const vv=visible();pick(vv[(Math.max(vv.indexOf(i),0)+d+vv.length)%vv.length])};
+  $('#pv').onclick=()=>go(-1);$('#nx').onclick=()=>go(1);
+  if(innerWidth<=860)$('#panel').scrollIntoView({behavior:'smooth',block:'start'});
+  getPhotos(p).then(l=>{if(t===tok)showPhotos(l)});
+}
+
+/* Hành trình của tôi */
+function tripView(){
+  tok++;quiz=null;cur=-1;mark();
+  const l=[...saved].sort((a,b)=>a-b);
+  $('#panel').innerHTML='<div class="intro"><h2>Hành trình của tôi</h2>'+(l.length?
+   `<p>Bạn đã lưu ${l.length} điểm đến, xếp theo thứ tự tháng:</p><ol class="trip">${l.map(i=>`<li><button data-i="${i}">Tháng ${P[i].mo} · ${P[i].n}</button><span>${P[i].tl}</span></li>`).join('')}</ol><div class="nav" style="justify-content:flex-start"><button id="cp">Sao chép danh sách</button><button id="clr">Xóa tất cả</button></div>`
+   :'<p>Chưa có điểm đến nào. Hãy bấm “Lưu vào hành trình” ở trang chi tiết của từng nơi.</p>')+'</div>';
+  document.querySelectorAll('.trip button').forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  if($('#cp')){
+    $('#cp').onclick=()=>{const tx=l.map(i=>`Tháng ${P[i].mo}: ${P[i].n} – ${P[i].tl}`).join('\n');
+      (navigator.clipboard?navigator.clipboard.writeText(tx):Promise.reject()).then(()=>{$('#cp').textContent='Đã sao chép'},()=>prompt('Sao chép danh sách:',tx))};
+    $('#clr').onclick=()=>{saved.clear();keep();stat();tripView()};
+  }
+}
+$('#trip').onclick=tripView;
+
+/* Đố vui: tranh vẽ và giai thoại */
+function startQuiz(){tok++;cur=-1;mark();quiz={q:0,s:0,o:shuffle(P.map((p,i)=>i)).slice(0,6).map(i=>[i,Math.random()<.5?'art':'story'])};nextQ()}
+function nextQ(){
+  if(quiz.q>=quiz.o.length){
+    $('#panel').innerHTML=`<div class="intro"><h2>Bạn đúng ${quiz.s}/${quiz.o.length} câu</h2><p>${quiz.s>=5?'Rất tuyệt, bạn nắm khá chắc các điểm đến này.':'Hãy khám phá thêm trên bản đồ rồi thử lại nhé.'}</p><div class="nav" style="justify-content:flex-start"><button id="again">Chơi lại</button><button id="back">Về khám phá</button></div></div>`;
+    $('#again').onclick=startQuiz;$('#back').onclick=intro;return}
+  const [ci,type]=quiz.o[quiz.q],c=P[ci];
+  const g=c.gt[Math.random()*c.gt.length|0];
+  const body=type==='art'?scene(c,false):`<blockquote>${g[1].split(c.n).join('…')}</blockquote>`;
+  const opts=shuffle([c,...shuffle(P.filter(p=>p!==c)).slice(0,3)]);
+  $('#panel').innerHTML=`<div class="q"><p class="note" style="padding:0 0 8px">Câu ${quiz.q+1}/${quiz.o.length} · Điểm: ${quiz.s}</p>
+   <h2 style="font-family:var(--serif);font-size:1.4rem;margin-bottom:12px">${type==='art'?'Bức tranh này gợi nhớ đến nơi nào?':'Câu chuyện này gắn với nơi nào?'}</h2>${body}
+   <div class="opts">${opts.map(o=>`<button data-n="${o.n}">${o.n}</button>`).join('')}</div><p class="fb" id="fb"></p><div id="nxq"></div></div>`;
+  document.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.n===c.n;if(ok)quiz.s++;
+    document.querySelectorAll('.opts button').forEach(x=>{x.disabled=true;if(x.dataset.n===c.n)x.classList.add('ok')});
+    if(!ok)b.classList.add('bad');
+    $('#fb').textContent=(ok?'Chính xác! ':'Chưa đúng. ')+'Đây là '+c.n+' (tháng '+c.mo+', '+c.tl+'). '+(type==='story'?g[0]+'.':c.sp[0]+'.');
+    $('#nxq').innerHTML=`<button class="act" id="go">${quiz.q+1>=quiz.o.length?'Xem kết quả':'Câu tiếp theo'}</button>`;
+    $('#go').onclick=()=>{quiz.q++;nextQ()};$('#go').focus();
+  });
+}
+
+/* Giao diện sáng hoặc tối */
+const root=document.documentElement;
+function theme(t){root.dataset.theme=t;$('#theme').textContent=t==='dark'?'Giao diện: Tối':'Giao diện: Sáng';LS.set('theme',t)}
+$('#theme').onclick=()=>theme(root.dataset.theme==='dark'?'light':'dark');
+theme(LS.get('theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+/* Trợ lý ảo: trả lời dựa trên dữ liệu của trang, chạy ngay trên trình duyệt */
+const norm=t=>t.toLowerCase().replace(/đ/g,'d').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+const AL=[
+ ['tuyen quang','ha giang','dong van','lung cu','ma pi leng','tan trao'],
+ ['cao bang','ban gioc','pac bo','nguom ngao'],
+ ['ha noi','ho guom','hoan kiem','thang long','van mieu','khue van'],
+ ['ninh binh','trang an','hoa lu','tam coc','ha nam','nam dinh','phat diem','bich dong'],
+ ['quang tri','quang binh','phong nha','son doong','thanh co','hien luong','vinh moc'],
+ ['hue','dai noi','ngo mon','song huong','thien mu','co do'],
+ ['da nang','hoi an','my son','ba na','quang nam','son tra','cau rong','ngu hanh son'],
+ ['gia lai','binh dinh','quy nhon','bien ho','tay nguyen','cong chieng','pleiku','tay son','nha rong'],
+ ['ho chi minh','sai gon','tphcm','tp hcm','vung tau','binh duong','ben nha rong','dinh doc lap','con dao','cu chi','ba ria'],
+ ['tay ninh','long an','ba den','cao dai','dau tieng'],
+ ['an giang','kien giang','phu quoc','chau doc','tra su','nui sam','ha tien','bay nui','rach gia'],
+ ['ca mau','bac lieu','mui ca mau','u minh','dat mui','dien gio']];
+const STOP=new Set('la va cua co khong gi nao the nhu den tai cho nay do cac mot nhung duoc voi trong ve khi lai thi bi hay toi minh ban muon biet hoi'.split(' '));
+const hasK=(n,ks)=>ks.some(k=>(' '+n+' ').includes(' '+k+' '));
+const findPlace=n=>{let b=-1,l=0;AL.forEach((a,i)=>a.forEach(w=>{if((' '+n+' ').includes(' '+w+' ')&&w.length>l){b=i;l=w.length}}));return b};
+const go=(i,label,sec)=>`<button class="go" data-i="${i}"${sec?` data-s="${sec}"`:''}>${label}</button>`;
+const act=(a,label)=>`<button class="go" data-a="${a}">${label}</button>`;
+let CORP=null;
+function corp(){
+  if(!CORP){CORP=[];P.forEach((p,i)=>{const add=(l,t)=>CORP.push({i,l,t,n:norm(l+' '+t)});
+    add('Giới thiệu',p.ds);add('Tổng quan',p.t);p.sp.forEach(x=>add('Điểm nổi bật',x));
+    p.gt.forEach(g=>add('Giai thoại: '+g[0],g[1]));p.ls.forEach(x=>add('Lịch sử '+x[1],x[2]))})}
+  return CORP;
+}
+function search(n){
+  const ks=[...new Set(n.split(' ').filter(w=>w.length>=3&&!STOP.has(w)))];
+  if(!ks.length)return[];
+  return corp().map(c=>({c,s:ks.filter(k=>c.n.includes(k)).length})).filter(x=>x.s>=Math.min(2,ks.length)).sort((a,b)=>b.s-a.s).slice(0,2);
+}
+const SUG=['Tháng 5 đi đâu?','Giai thoại ở Hà Nội','Ăn gì ở Huế?','Di sản UNESCO nào?','Khi nào nên đi Cà Mau?','Gợi ý lịch trình'];
+const FALL='Mình chưa tìm thấy thông tin phù hợp trong dữ liệu của trang. Bạn thử hỏi theo cách khác, ví dụ nêu rõ tên địa danh hoặc số tháng, như “Ăn gì ở Đà Nẵng?”, “Lịch sử Huế”, “Tháng 9 đi đâu?”.';
+
+function answer(q){
+  const n=norm(q);
+  if(!n)return 'Bạn hãy nhập câu hỏi nhé.';
+  let i=findPlace(n);const mm=n.match(/thang (\d{1,2})/);
+  if(i<0&&mm&&+mm[1]>=1&&+mm[1]<=12)i=+mm[1]-1;
+  if(i>=0){
+    const p=P[i],head=`<b>${p.n}</b> (tháng ${p.mo}, ${p.tl})`;
+    if(hasK(n,['an gi','am thuc','dac san','mon ngon','mon an','do an']))
+      return `${head}<p>Ẩm thực nên thử: ${p.fd.join(', ')}.</p>${go(i,'Xem trang '+p.n)}`;
+    if(hasK(n,['khi nao','thoi diem','mua nao','nen di','thang nao','thoi tiet','di luc nao']))
+      return `${head}<p>${p.se}</p>${go(i,'Xem trang '+p.n)}`;
+    if(hasK(n,['giai thoai','truyen thuyet','cau chuyen','su tich','huyen thoai']))
+      return `${head}${p.gt.map(g=>`<p><b>${g[0]}.</b> ${g[1]}</p>`).join('')}${go(i,'Mở tab Giai thoại','sb')}`;
+    if(hasK(n,['lich su','giai doan','nam nao','thoi ky','moc lich','chien tranh','khang chien']))
+      return `${head}<ul>${p.ls.map(x=>`<li><b>${x[1]}:</b> ${x[2]}</li>`).join('')}</ul>${go(i,'Mở tab Lịch sử','sc')}`;
+    if(hasK(n,['tham quan','noi bat','di dau','diem den','dia diem','check in','choi gi','danh thang','di tich']))
+      return `${head}<ul>${p.sp.map(x=>`<li>${x}</li>`).join('')}</ul>${go(i,'Xem trang '+p.n)}`;
+    if(hasK(n,['sap nhap','hop nhat','34 tinh','ten cu','tinh cu','gom nhung','gom cac']))
+      return `${head}<p>${p.m}.</p>${go(i,'Xem trang '+p.n)}`;
+    if(hasK(n,['unesco','di san the gioi'])){
+      const u=p.sp.concat(p.ls.map(x=>x[2])).filter(x=>/UNESCO/.test(x));
+      return `${head}`+(u.length?`<ul>${u.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<p>Trong dữ liệu của trang, mình chưa thấy mục UNESCO nào gắn với nơi này.</p>')+go(i,'Xem trang '+p.n);
+    }
+    return `${head}<p>${p.t}</p>${go(i,'Xem trang '+p.n)}${go(i,'Giai thoại','sb')}${go(i,'Lịch sử','sc')}`;
+  }
+  if(/^(xin chao|chao|hello|hi|alo)\b/.test(n))return 'Xin chào! Mình là trợ lý của Chạm Văn Hóa. Bạn có thể hỏi về 12 điểm đến: ẩm thực, giai thoại, lịch sử, thời điểm nên đi…';
+  if(hasK(n,['cam on','thanks']))return 'Rất vui được giúp bạn! Cần biết thêm điều gì, bạn cứ hỏi nhé.';
+  if(hasK(n,['do vui','tro choi','quiz']))return 'Bạn thử sức với bộ đố vui 6 câu về tranh vẽ và giai thoại nhé.<br>'+act('quiz','Bắt đầu đố vui');
+  if(hasK(n,['ngau nhien','bat ky']))return 'Để mình mở ngẫu nhiên một điểm đến cho bạn.<br>'+act('rnd','Khám phá ngẫu nhiên');
+  if(hasK(n,['lich trinh','ke hoach','goi y','hanh trinh']))
+    return `Trang chia thành 12 tháng, mỗi tháng một điểm đến:<ul>${P.map(p=>`<li>Tháng ${p.mo}: ${p.n}</li>`).join('')}</ul>Bạn có thể bấm “Lưu vào hành trình” ở từng nơi để tạo lịch trình riêng.<br>${act('trip','Hành trình của tôi')}`;
+  if(hasK(n,['unesco','di san the gioi'])){
+    const l=[];P.forEach((p,k)=>p.sp.forEach(x=>{if(/UNESCO/.test(x))l.push(`<li><b>${p.n}:</b> ${x}</li>`)}));
+    return `Các điểm gắn với UNESCO trên trang:<ul>${l.join('')}</ul>`;
+  }
+  const rg=n.includes('mien bac')?'b':(n.includes('mien trung')||n.includes('tay nguyen'))?'t':n.includes('mien nam')?'n':null;
+  if(rg){const l=P.map((p,k)=>[p,k]).filter(x=>x[0].r===rg);return `${R[rg]} có ${l.length} điểm đến:<br>${l.map(x=>go(x[1],`T${x[0].mo} · ${x[0].n}`)).join('')}`}
+  if(hasK(n,['huong dan','lam duoc gi','cach dung','su dung','chuc nang','giup']))
+    return '<ul><li>Bấm ghim trên bản đồ hoặc chọn tháng để xem thông tin.</li><li>Dùng các tab Giai thoại, Giai đoạn lịch sử để đọc sâu hơn.</li><li>“Lưu vào hành trình” để tạo lịch trình của bạn.</li><li>“Đố vui” để kiểm tra hiểu biết.</li><li>Nút “Giao diện” đổi sáng hoặc tối.</li></ul>';
+  const r=search(n);
+  if(r.length)return r.map(x=>`<p><b>${x.c.l}</b> (${P[x.c.i].n}): ${x.c.t}</p>`).join('')+go(r[0].c.i,'Xem trang '+P[r[0].c.i].n);
+  return FALL;
+}
+
+const msgs=$('#msgs'),chat=$('#chat'),fab=$('#fab');
+function say(h,who){const d=document.createElement('div');d.className='m '+who;d.innerHTML=h;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
+function ask(q){q=q.trim();if(!q)return;say(esc(q),'me');const t=say('Đang soạn câu trả lời…','bot typing');setTimeout(()=>{t.remove();const d=say(answer(q),'bot');msgs.scrollTop=msgs.scrollHeight},350)}
+function chatOpen(o){
+  chat.hidden=!o;fab.setAttribute('aria-expanded',o);
+  if(o){if(!msgs.children.length)say('Xin chào! Mình là trợ lý của <b>Chạm Văn Hóa</b>. Mình trả lời dựa trên nội dung của trang này: 12 điểm đến, giai thoại, lịch sử, ẩm thực và thời điểm nên đi. Bạn muốn hỏi gì?','bot');$('#ci').focus()}
+}
+fab.onclick=()=>chatOpen(chat.hidden);
+$('#cx').onclick=()=>{chatOpen(false);fab.focus()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!chat.hidden)chatOpen(false)});
+$('#cf').onsubmit=e=>{e.preventDefault();ask($('#ci').value);$('#ci').value=''};
+$('#sug').innerHTML=SUG.map(x=>`<button type="button">${x}</button>`).join('');
+$('#sug').onclick=e=>{const b=e.target.closest('button');if(b)ask(b.textContent)};
+msgs.addEventListener('click',e=>{
+  const b=e.target.closest('.go');if(!b)return;
+  if(b.dataset.a){({quiz:startQuiz,trip:tripView,rnd:()=>$('#rnd').click()})[b.dataset.a]()}
+  else{pick(+b.dataset.i);if(b.dataset.s){const t=document.querySelector(`.stabs [data-s="${b.dataset.s}"]`);if(t)t.click()}}
+  if(innerWidth<=860)chatOpen(false);
+});
+
+intro();
+</script>
+</body>
+</html>
